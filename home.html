@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desain Web Responsive</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        display: flex;
+        height: 100vh;
+        width: 100vw;
+      }
+
+      .sidebar {
+        display: flex;
+        width: 20vw;
+        flex-direction: column;
+        box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.548);
+      }
+
+      .sidebar a {
+        text-decoration: none;
+        color: black;
+        text-align: start;
+        padding: 20px;
+        font-weight: bold;
+      }
+
+      .sidebar a:hover,
+      .sidebar a:active {
+        background-color: #aa0404;
+      }
+
+      .active {
+        background-color: #aa0404;
+      }
+
+      .content {
+        display: flex;
+      }
+
+      .container {
+        padding-left: 20px;
+      }
+
+      .container > h1 {
+        padding: 20px 0px 20px 0px;
+      }
+
+      .container p {
+        padding: 10px 0px 10px 0px;
+        font-weight: 500;
+      }
+
+      .btn {
+        padding: 9px;
+        border-radius: 6px;
+        border: none;
+        background-color: #aa0404;
+        color: white;
+        margin-top: 10px;
+        font-weight: bold;
+        font-style: italic;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        border-bottom: 3px solid black;
+      }   
+
+      .overlay {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s, opacity 0.5s ease-in-out;
+      }
+
+      .overlay.active {
+        visibility: visible;
+        opacity: 1;
+        transition: visibility 0s, opacity 0.5s ease-in-out;
+      }
+
+      .login-form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.548);
+        min-width: 300px;
+      }
+
+      .login-form h2 {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .login-form input {
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 6px;
+        border: none;
+        box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
+        width: 100%;
+      }
+
+      .login-form button[type="submit"] {
+        padding: 10px;
+        border-radius: 6px;
+        border: none;
+        background-color: #aa0404;
+        color: white;
+        margin-top: 10px;
+        font-weight: bold;
+        font-style: italic;
+        width: 100%;
+      }
+
+      .login-form button[type="submit"]:hover {
+        border-bottom: 3px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar">
+      <a href="home.html">Home</a>
+      <a href="blog.html" disabled>Blog</a>
+      <a href="contact.html" disabled>Contact</a>
+      <a href="about.html" disabled>About</a>
+    </div>
+    <main class="content">
+      <div class="container">
+        <h1>Desain Web</h1>
+        <hr>
+        <p>Platform digital yang menampilkan informasi dan konten seperti teks,gambar, video dan lainnya melalui internet. Website dapat diakses melalui browser web seperti Google Chrome, Mozilla Firefox, atau Safari, dan biasanya ditempatkan pada server web. Website memiliki ukuran responsive website untuk mobile, tablet, dan desktop.</p>
+        <div class="login-section">
+          <button type="button" class="btn" onclick="showLoginForm()">Login</button>
+          <div class="overlay" id="overlay">
+            <form class="login-form" onsubmit="submitLoginForm(event)">
+              <h2>Login</h2>
+              <label for="username">Username</label>
+              <input type="text" id="username" name="username" required>
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" required>
+              <button type="submit">Login</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      let isLoggedIn = false; // Tambahkan variabel ini untuk melacak status login
+
+      function showLoginForm() {
+        document.getElementById("overlay").classList.toggle("active");
+      }
+
+      function submitLoginForm(event) {
+        event.preventDefault();
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        if (username === "admin" && password === "123") {
+          alert("Login successful!");
+          document.getElementById("overlay").classList.toggle("active");
+          enableLinks();
+          isLoggedIn = true; // Set isLoggedIn ke true setelah login berhasil
+        } else {
+          alert("Invalid username or password!");
+        }
+      }
+
+      function enableLinks() {
+        const links = document.getElementsByClassName("sidebar")[0].getElementsByTagName("a");
+        for (let i = 0; i < links.length; i++) {
+          links[i].removeAttribute("disabled");
+        }
+      }
+
+      
+      document.addEventListener("DOMContentLoaded", function() {
+        const links = document.getElementsByClassName("sidebar")[0].getElementsByTagName("a");
+        for (let i = 0; i < links.length; i++) {
+          links[i].setAttribute("disabled", "true");
+        }
+      });
+
+      
+      const sidebarLinks = document.getElementsByClassName("sidebar")[0].getElementsByTagName("a");
+      for (let i = 0; i < sidebarLinks.length; i++) {
+        sidebarLinks[i].addEventListener("click", function(event) {
+          if (!isLoggedIn) {
+            event.preventDefault();
+            alert("Anda harus login terlebih dahulu!");
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
